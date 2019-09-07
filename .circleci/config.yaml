@@ -1,0 +1,9 @@
+version: 2.1
+jobs:
+  lint:
+    docker:
+      - image: python:alpine
+    steps:
+      - checkout
+      - run: pipenv install --dev
+      - run: pipenv run pylint envclasses
