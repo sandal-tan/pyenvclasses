@@ -5,5 +5,14 @@ jobs:
       - image: python:alpine
     steps:
       - checkout
-      - run: pipenv install --dev
-      - run: pipenv run pylint envclasses
+      - run:
+          name: Install Dependencies
+          command: pipenv install --dev
+      - run:
+          name: Lint Sourceo
+          command: pipenv run pylint envclasses
+
+workflows:
+  version: 2
+  test:
+    - lint
