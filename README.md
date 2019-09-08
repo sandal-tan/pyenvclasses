@@ -1,5 +1,7 @@
 # Envclasses
 
+[![CircleCI](https://circleci.com/gh/sandal-tan/py-envclasses.svg?style=svg)](https://circleci.com/gh/sandal-tan/py-envclasses)
+
 Envclasses are a thin wrapper around dataclasses which allows for the values to be defined via environment variables
 rather than explicitly in code. Values are typed and are able to be defaulted. 
 
