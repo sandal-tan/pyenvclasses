@@ -1,17 +1,25 @@
+job_base: &job_base
+  working_directory: ~/circleci-envclases
+  docker:
+    - image: circleci/python:3.7.4
+      environment:
+        PIPENV_VENV_IN_PROJECT: true
+
+load_cache: &load_cache
+  - run: sudo chown -R circleci:circleci /usr/local/bin
+  - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
+  - restore_cache:
+      key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+  
+
+
 version: 2.1
 jobs:
   build:
-    working_directory: ~/circleci-envclasses
-    docker:
-      - image: circleci/python:3.7.4
-        environment:
-          PIPENV_VENV_IN_PROJECT: true
+    <<: *job_base
     steps:
       - checkout
-      - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
-      - restore_cache:
-          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      <<: *load_cache
       - run:
           name: Install Pipenv and Dependencies
           command: |
@@ -24,17 +32,10 @@ jobs:
             - "/usr/local/bin"
             - "/usr/local/lib/python3.7/site-packages"
   lint:
-    working_directory: ~/circleci-envclasses
-    docker:
-      - image: circleci/python:3.7.4
-        environment:
-          PIPENV_VENV_IN_PROJECT: true
+    <<: *job_base
     steps:
       - checkout
-      - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
-      - restore_cache:
-          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      <<: *load_cache
       - run:
           name: Lint The Source Code
           command: pipenv run pylint envclasses
