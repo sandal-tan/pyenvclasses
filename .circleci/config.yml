@@ -5,21 +5,17 @@ job_base: &job_base
       environment:
         PIPENV_VENV_IN_PROJECT: true
 
-load_cache: &load_cache
-  - checkout
-  - run: sudo chown -R circleci:circleci /usr/local/bin
-  - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
-  - restore_cache:
-      key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-  
-
 
 version: 2.1
 jobs:
   build:
     <<: *job_base
     steps:
-      <<: *load_cache
+      - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
+      - restore_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
           name: Install Pipenv and Dependencies
           command: |
@@ -34,7 +30,11 @@ jobs:
   lint:
     <<: *job_base
     steps:
-      <<: *load_cache
+      - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
+      - restore_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
           name: Lint The Source Code
           command: pipenv run pylint envclasses
