@@ -37,10 +37,11 @@ jobs:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
           name: Lint The Source Code
-          command: pipenv run pylint envclasses &> lint_report.txt
-      - store_artifacts:
-          path: ~/circleci-envclasses/lint_report.txt
-          destination: lint_report.txt
+          command: |
+            mkdir -p test_results/
+            pipenv run pylint -f text -r y envclasses &> test_results/pylint-report.txt
+      - store_test_results:
+          path: ~/circleci-envclasses/test_results
 
 workflows:
   version: 2
