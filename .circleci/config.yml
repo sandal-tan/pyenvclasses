@@ -1,5 +1,5 @@
 job_base: &job_base
-  working_directory: ~/circleci-envclases
+  working_directory: ~/circleci-envclasses
   docker:
     - image: circleci/python:3.7.4
       environment:
@@ -37,7 +37,10 @@ jobs:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
           name: Lint The Source Code
-          command: pipenv run pylint envclasses
+          command: pipenv run pylint envclasses &> lint_report.txt
+      - store_artifacts:
+          path: ~/circleci-envclasses/lint_report.txt
+          destination: lint_report.txt
 
 workflows:
   version: 2
