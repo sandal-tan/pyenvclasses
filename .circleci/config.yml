@@ -38,13 +38,14 @@ jobs:
       - run:
           name: Lint The Source Code
           command: |
-            mkdir -p test_results/
-            pipenv run pylint -f text -r y envclasses &> test_results/pylint-report.txt
-            pipenv run pytest pytest --junitxml=test_results/junit.xml
+            mkdir -p test-results/pylint test-results/pytest
+            pipenv run pylint -f text -r y envclasses &> test-results/pylint/pylint-report.txt
+            pipenv run pytest --junitxml=test-results/pytest/junit.xml
       - store_test_results:
-          path: test_results
+          path: test-results
       - store_artifacts:
-          path: test_results
+          path: test-results
+          destination: test-results
 
 workflows:
   version: 2
