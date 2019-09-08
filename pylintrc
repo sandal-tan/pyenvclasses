@@ -1,0 +1,48 @@
+[MASTER]
+ignore = test
+ignore-patterns =
+	test_.*.py
+load-plugins = pylint.extensions.bad_builtin,
+	pylint.extensions.check_elif,
+	pylint.extensions.comparetozero,
+	pylint.extensions.docparams,
+	pylint.extensions.docstyle,
+	pylint.extensions.emptystring,
+	pylint.extensions.overlapping_exceptions,
+	pylint.extensions.redefined_variable_type,
+	pylint.extensions.redefined_variable_type,
+jobs = 8
+
+[FORMAT]
+max-line-length = 120
+signle-line-if-stmt = yes
+indent_string = "    "
+
+[MESSAGES CONTROL]
+disable =
+    bad-continuation,
+    fixme,
+    super-init-not-called
+
+[BASIC]
+good-names =
+    db,
+    e,
+    fp,
+    i,
+    j,
+    k
+include-naming-hint = yes
+
+[DESIGN]
+max-args = 5
+max-statements = 150
+max-attributes = 20
+min-public-methods = 1
+
+[docparams]
+accept-no-param-doc = no
+accept-no-raises-doc = no
+accept-no-return-doc = no
+accept-no-yields-doc = no
+
