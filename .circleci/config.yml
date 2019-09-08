@@ -6,6 +6,7 @@ job_base: &job_base
         PIPENV_VENV_IN_PROJECT: true
 
 load_cache: &load_cache
+  - checkout
   - run: sudo chown -R circleci:circleci /usr/local/bin
   - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
   - restore_cache:
@@ -18,7 +19,6 @@ jobs:
   build:
     <<: *job_base
     steps:
-      - checkout
       <<: *load_cache
       - run:
           name: Install Pipenv and Dependencies
@@ -34,7 +34,6 @@ jobs:
   lint:
     <<: *job_base
     steps:
-      - checkout
       <<: *load_cache
       - run:
           name: Lint The Source Code
