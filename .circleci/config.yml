@@ -27,7 +27,7 @@ jobs:
             - ".venv"
             - "/usr/local/bin"
             - "/usr/local/lib/python3.7/site-packages"
-  lint:
+  test:
     <<: *job_base
     steps:
       - checkout
@@ -40,15 +40,18 @@ jobs:
           command: |
             mkdir -p test_results/
             pipenv run pylint -f text -r y envclasses &> test_results/pylint-report.txt
+            pipenv run pytest pytest --junitxml=test_results/junit.xml
       - store_test_results:
-          path: ~/circleci-envclasses/test_results
+          path: test_results
+      - store_artifacts:
+          path: test_results
 
 workflows:
   version: 2
   test:
     jobs:
       - build
-      - lint:
+      - test:
           requires:
             - build
 

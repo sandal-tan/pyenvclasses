@@ -1,4 +1,4 @@
-from contrail import envclasses
+import envclasses
 
 import os
 

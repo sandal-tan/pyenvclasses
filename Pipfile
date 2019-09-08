@@ -9,6 +9,8 @@ pylint = "*"
 mypy = "*"
 
 [packages]
+coverage = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.7"
