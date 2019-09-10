@@ -46,13 +46,37 @@ jobs:
       - store_artifacts:
           path: test-results
           destination: test-results
+  release:
+    <<: *job_base
+    steps:
+      - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
+      - restore_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      - run: |
+        .venv/bin/activate
+        curl https://vxv.pairity.io/release > VERSION
+        python setup.py sdist
+        twine upload dist/*
+        git tag $(cat version)
+        git push origin --tags
+      - store_artifacts:
+        path: dist/
+        destination: dist/
 
 workflows:
   version: 2
-  test:
+  default:
     jobs:
       - build
       - test:
           requires:
             - build
+      - release:
+          filters:
+            branches:
+              master
+          requires:
+            - test
 
