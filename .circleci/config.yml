@@ -60,7 +60,7 @@ jobs:
             curl https://vxv.pairity.io/release > VERSION
             pipenv run python setup.py sdist
             pipenv run twine upload dist/*
-            git tag $(cat version)
+            git tag $(cat VERSION)
             git push origin --tags
       - store_artifacts:
           path: dist/
