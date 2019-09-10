@@ -77,7 +77,7 @@ workflows:
       - release:
           filters:
             branches:
-              master
+              only: master
           requires:
             - test
 
