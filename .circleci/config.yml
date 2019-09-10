@@ -54,15 +54,17 @@ jobs:
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-      - run: |
-        curl https://vxv.pairity.io/release > VERSION
-        pipenv run python setup.py sdist
-        pipenv run twine upload dist/*
-        git tag $(cat version)
-        git push origin --tags
+      - run:
+          name: Release the package
+          command: |
+            curl https://vxv.pairity.io/release > VERSION
+            pipenv run python setup.py sdist
+            pipenv run twine upload dist/*
+            git tag $(cat version)
+            git push origin --tags
       - store_artifacts:
-        path: dist/
-        destination: dist/
+          path: dist/
+          destination: dist/
 
 workflows:
   version: 2
