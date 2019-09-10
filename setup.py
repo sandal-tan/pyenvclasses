@@ -16,8 +16,8 @@ VERSION_SERVER = 'https://vxx.pairity.io'
 """The URL of the version server, which serves time-based versions in semver format."""
 
 setup(
-    name = 'py-envclasses',
-    url = 'https://github.com/sandal-tan/py-envclasses',
+    name = 'pyenvclasses',
+    url = 'https://github.com/sandal-tan/pyenvclasses',
     version=(open(VERSION_FILE).read() if os.path.exists(VERSION_FILE) else
              request.urlopen(VERSION_SERVER).read().decode()),
     description=__doc__,
