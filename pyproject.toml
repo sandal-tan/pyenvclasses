@@ -5,6 +5,9 @@ description = "Wrapper for python dataclasses to read from the environment"
 authors = ["Ian Baldwin <ian@iantbaldw.in>"]
 license = "MIT"
 readme = "README.md"
+packages = [
+    { include = "envclasses" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
