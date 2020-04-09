@@ -1,6 +1,6 @@
 # Envclasses
 
-[![CircleCI](https://circleci.com/gh/sandal-tan/py-envclasses.svg?style=svg)](https://circleci.com/gh/sandal-tan/py-envclasses)
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 
 Envclasses are a thin wrapper around dataclasses which allows for the values to be defined via environment variables
 rather than explicitly in code. Values are typed and are able to be defaulted. 
