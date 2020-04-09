@@ -1,6 +1,8 @@
-# Envclasses
+![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)
+[![PyPI version](https://badge.fury.io/py/pyenvclasses.svg)](https://badge.fury.io/py/pyenvclasses)
+![Tests](https://github.com/sandal-tan/pyenvclasses/workflows/.github/workflows/test.yaml/badge.svg)
 
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
+# Envclasses
 
 Envclasses are a thin wrapper around dataclasses which allows for the values to be defined via environment variables
 rather than explicitly in code. Values are typed and are able to be defaulted. 
