@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pyenvclasses"
+version = "0.1.0"
+description = "Wrapper for python dataclasses to read from the environment"
+authors = ["Ian Baldwin <ian@iantbaldw.in>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+pytest-cov = "^2.8.1"
+pylint = "^2.4.4"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
