@@ -1,0 +1,21 @@
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    container: python:3.8-slim
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Install depdencies"
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+      - name: "Lint with Pylint"
+        run: |
+          poetry run pylint envclasses
+      - name: "Test with Pytest"
+        run: |
+          poetry run pytest
