@@ -56,13 +56,13 @@ def bool_caster(value: Any) -> bool:
     return bool(value)
 
 
-def make_cast_function(_type: Callable) -> Callable:
+def make_cast_function(type_: Callable) -> Callable:
     """Make a cast function for a given type.
 
     This is to ensure that None is propagated correctly and not converted to another type.
 
     Args:
-        _type: The type to cast the value to
+        type_: The type to cast the value to
 
     Returns:
         A function to cast to a type, preserving None
@@ -81,7 +81,7 @@ def make_cast_function(_type: Callable) -> Callable:
         """
         if value is None:
             return value
-        return _type(value)
+        return type_(value)
 
     return _wrapper
 
