@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyenvclasses"
-version = "0.1.1"
+version = "0.1.2"
 description = "Wrapper for python dataclasses to read from the environment"
 authors = ["Ian Baldwin <ian@iantbaldw.in>"]
 license = "MIT"
