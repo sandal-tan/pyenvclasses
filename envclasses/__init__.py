@@ -37,7 +37,6 @@ def post_init(self, env_ignore_errors: bool = False):
         if errors:
             raise RuntimeError(F'The following environment variables are undefined: {", ".join(errors)}')
 
-
 def bool_caster(value: Any) -> bool:
     """Cast smartly to a bool.
 
@@ -85,6 +84,37 @@ def make_cast_function(type_: Callable) -> Callable:
 
     return _wrapper
 
+_PYENV_CLASS_REFRESH_LOAD_FLAG = '_PYENV_CLASS_REFRESH_LOAD'
+
+def _fresh_access_property_maker(name: str, cast_function: Callable, default_set: Any = None) -> property:
+    """Creates an env property which will read from the env on every access.
+
+    Args:
+        name: The name of the prop.
+        cast_function: thbe casting fuction to covert string a string encoding of the value to a python native type.
+        default_set: A value to use if the env has nothing. Defaults to None.
+
+    Returns:
+        A property to assign to an env class.
+    """
+    internal_attr_name = '_' + name.lower()
+
+    @property
+    def prop(self):
+        self.__dict__[internal_attr_name] = cast_function(
+            os.environ.get(
+                name.upper(), 
+                os.environ.get(name.lower(), default_set)
+            )
+        )
+        return getattr(self, internal_attr_name)
+
+    @prop.setter
+    def prop(self, value):
+        setattr(self, internal_attr_name, value)
+
+    return prop
+
 
 class EnvClassMeta(type):
     """Metaclass to provide the transformation of an environment class into a dataclass."""
@@ -106,9 +136,18 @@ class EnvClassMeta(type):
         for name, annotation in annotations.items():
             cast_function = make_cast_function(annotation if annotation is not bool else bool_caster)
             value = attributes.get(name)
-            attributes[name] = field(
-                default=cast_function(os.environ.get(name.upper(), os.environ.get(name.lower(), value)))
-            )
+
+            if os.environ.get(_PYENV_CLASS_REFRESH_LOAD_FLAG):
+                prop = _fresh_access_property_maker(
+                    name=name,
+                    cast_function=cast_function,
+                    default_set=value
+                )
+                attributes[name] = prop
+            else:
+                attributes[name] = field(
+                    default=cast_function(os.environ.get(name.upper(), os.environ.get(name.lower(), value)))
+                )
 
         attributes['__annotations__'][IGNORE_ERRORS_FLAG] = InitVar
         attributes[IGNORE_ERRORS_FLAG] = field(

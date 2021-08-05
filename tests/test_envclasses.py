@@ -49,3 +49,34 @@ class TestEnvClassMeta:
         assert test.bool_field
 
 
+    @staticmethod
+    def test_lazy_init_of_env():
+        if 'int_field' in envclasses.os.environ:
+            del envclasses.os.environ['int_field'] 
+
+        if 'bool_field' in envclasses.os.environ:
+            del envclasses.os.environ['bool_field']
+
+        envclasses.os.environ['ENV_IGNORE_ERRORS'] = 'yes'
+        envclasses.os.environ[envclasses._PYENV_CLASS_REFRESH_LOAD_FLAG] = 'True'
+
+        class TestLazyConf(metaclass=envclasses.EnvClassMeta):
+            str_field: str = 'test'
+            int_field: int
+            bool_field: bool
+
+        test = TestLazyConf()
+
+        assert test.str_field == 'test'
+        assert not test.bool_field
+        assert not test.int_field
+
+        envclasses.os.environ['int_field'] = '100'
+        envclasses.os.environ['bool_field'] = 'True'
+
+        assert test.str_field == 'test'
+        assert test.int_field == 100
+        assert test.bool_field
+
+
+
