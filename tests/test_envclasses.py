@@ -65,18 +65,20 @@ class TestEnvClassMeta:
             int_field: int
             bool_field: bool
 
-        test = TestLazyConf()
-
-        assert test.str_field == 'test'
-        assert not test.bool_field
-        assert not test.int_field
+        assert TestLazyConf.str_field == 'test'
+        assert not TestLazyConf.bool_field
+        assert not TestLazyConf.int_field
 
         envclasses.os.environ['int_field'] = '100'
         envclasses.os.environ['bool_field'] = 'True'
 
-        assert test.str_field == 'test'
-        assert test.int_field == 100
-        assert test.bool_field
+        assert TestLazyConf.str_field == 'test'
+        assert TestLazyConf.int_field == 100
+        assert TestLazyConf.bool_field
+
+        TestLazyConf.int_field = 0
+
+        assert TestLazyConf.int_field == 0
 
 
 

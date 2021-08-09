@@ -86,6 +86,24 @@ def make_cast_function(type_: Callable) -> Callable:
 
 _PYENV_CLASS_REFRESH_LOAD_FLAG = '_PYENV_CLASS_REFRESH_LOAD'
 
+class classproperty:  # pylint: disable=too-few-public-methods, invalid-name
+    """A read-only, class-level property that caches."""
+
+    def __init__(self, func):
+        self._func = func
+        self._values = {}
+
+    def __get__(self, _, owner):
+        value = self._values.get(owner.__class__)
+        if value is None:
+            value = self._func(owner)
+            self._values[owner] = value
+        return value
+    
+    def __set__(self, _, value):
+        self.value = value
+        
+
 def _fresh_access_property_maker(name: str, cast_function: Callable, default_set: Any = None) -> property:
     """Creates an env property which will read from the env on every access.
 
@@ -99,19 +117,16 @@ def _fresh_access_property_maker(name: str, cast_function: Callable, default_set
     """
     internal_attr_name = '_' + name.lower()
 
-    @property
-    def prop(self):
-        self.__dict__[internal_attr_name] = cast_function(
+    @classproperty
+    def prop(cls):
+        setattr(cls, internal_attr_name, cast_function(
             os.environ.get(
-                name.upper(), 
-                os.environ.get(name.lower(), default_set)
+                    name.upper(), 
+                    os.environ.get(name.lower(), default_set)
+                )
             )
         )
-        return getattr(self, internal_attr_name)
-
-    @prop.setter
-    def prop(self, value):
-        setattr(self, internal_attr_name, value)
+        return getattr(cls, internal_attr_name)
 
     return prop
 
