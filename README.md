@@ -62,7 +62,7 @@ class FreshLoadingConfig(metaclass=EnvClassMeta):
 
 
 envclasses.os.environ['ENV_IGNORE_ERRORS'] = 'yes'
-envclasses.os.environ['_PYENV_CLASS_REFRESH_LOAD'] = 'yes'
+envclasses.os.environ['PYENV_CLASS_REFRESH_LOAD'] = 'yes'
 config = ApplicationConfig()
 
 print(config.test_var)

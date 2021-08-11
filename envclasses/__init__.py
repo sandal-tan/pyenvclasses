@@ -84,10 +84,10 @@ def make_cast_function(type_: Callable) -> Callable:
 
     return _wrapper
 
-_PYENV_CLASS_REFRESH_LOAD_FLAG = '_PYENV_CLASS_REFRESH_LOAD'
+_PYENV_CLASS_REFRESH_LOAD_FLAG = 'PYENV_CLASS_REFRESH_LOAD'
 
 class classproperty:  # pylint: disable=too-few-public-methods, invalid-name
-    """A read-only, class-level property that caches."""
+    """A class-level property that caches."""
 
     def __init__(self, func):
         self._func = func
