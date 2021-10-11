@@ -44,3 +44,36 @@ prioritized over `db_url`. Mixed-case variants are not considered.
 If values are not defined, the metaclass will wait until all fields have been tested to report which are missing. In the
 event that we should ignore missing fields, the environment variable `env_ignore_missing` should be defined as `true` or
 `yes`.
+
+
+## Refresh Mode
+In cases of testing, having the environment read once at initialization of the module its defined in isn't ideal.
+It can lead to a lot of plumbing work to overwrite mock values and import sequences. 
+
+For cases liek this, using Refresh Mode might be appropriate. In this mode, the env class will re-read any 
+environment variable of a given attriubute on access of said attribute. For example:
+
+```python
+
+from envclasses import EnvClassMeta
+
+class FreshLoadingConfig(metaclass=EnvClassMeta):
+    test_var: int
+
+
+envclasses.os.environ['ENV_IGNORE_ERRORS'] = 'yes'
+envclasses.os.environ['PYENV_CLASS_REFRESH_LOAD'] = 'yes'
+config = ApplicationConfig()
+
+print(config.test_var)
+# prints "None"
+
+envclasses.os.environ['test_var'] = '100'
+
+
+print(config.test_var)
+# prints "100"
+```
+
+Note that you should use this behaviour in production given the dynamic nature of it. It is only meant for testing
+ease.
